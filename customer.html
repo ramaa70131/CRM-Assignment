@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Customers | SuperCRM</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="script" href="script.js">
+</head>
+<body>
+    <header class="main-header">
+        <div class="logo">SuperCRM</div>
+        <nav>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="customer.html">Customers</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="login.html">Login</a></li>
+            <li><a href="register.html">Register</a></li>
+          </ul>
+        </nav>
+      </header>
+      
+
+  <section class="content">
+    <h1>Customer Management</h1>
+
+    <form id="customerForm">
+      <input type="text" id="name" placeholder="Customer Name" required>
+      <input type="email" id="email" placeholder="Customer Email" required>
+      <input type="text" id="phone" placeholder="Phone Number" required>
+      <button type="submit">Add Customer</button>
+    </form>
+
+    <div class="customer-list">
+      <h2>Customer List</h2>
+      <ul id="customerList"></ul>
+    </div>
+  </section>
+
+  <script>
+    const form = document.getElementById("customerForm");
+    const customerList = document.getElementById("customerList");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const phone = document.getElementById("phone").value;
+
+      // Save to backend (mock)
+      const li = document.createElement("li");
+      li.textContent = `${name} - ${email} - ${phone}`;
+      customerList.appendChild(li);
+
+      form.reset();
+    });
+
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      localStorage.clear();
+      window.location.href = "login.html";
+    });
+  </script>
+</body>
+</html>

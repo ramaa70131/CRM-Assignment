@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Blog | SuperCRM</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="script" href="script.js">
+</head>
+<body>
+    <header class="main-header">
+        <div class="logo">SuperCRM</div>
+        <nav>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="customer.html">Customers</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="login.html">Login</a></li>
+            <li><a href="register.html">Register</a></li>
+          </ul>
+        </nav>
+      </header>
+      
+
+  <section class="content">
+    <h1>Latest Blog Posts</h1>
+
+    <input type="text" id="searchInput" placeholder="Search blog posts...">
+    <ul id="blogList" class="blog-list">
+      <!-- Dynamic blog posts -->
+    </ul>
+  </section>
+
+  <script>
+    const posts = [
+      { title: "5 Tips to Close More Deals", summary: "Learn practical tips to boost your CRM sales strategy." },
+      { title: "How to Manage Customer Calls Effectively", summary: "Techniques to streamline communication with clients." },
+      { title: "Why CRMs Improve Productivity", summary: "Explore how CRMs help reduce manual work and increase focus." },
+    ];
+
+    const blogList = document.getElementById("blogList");
+    const searchInput = document.getElementById("searchInput");
+
+    const renderPosts = (query = "") => {
+      blogList.innerHTML = "";
+      const filtered = posts.filter(p => p.title.toLowerCase().includes(query.toLowerCase()));
+      filtered.forEach(p => {
+        const li = document.createElement("li");
+        li.innerHTML = `<h3>${p.title}</h3><p>${p.summary}</p>`;
+        blogList.appendChild(li);
+      });
+    };
+
+    renderPosts();
+
+    searchInput.addEventListener("input", () => {
+      renderPosts(searchInput.value);
+    });
+
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      localStorage.clear();
+      window.location.href = "login.html";
+    });
+  </script>
+</body>
+</html>
