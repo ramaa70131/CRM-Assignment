@@ -4,63 +4,130 @@
   <meta charset="UTF-8">
   <title>Blog | SuperCRM</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="script" href="script.js">
+  <link rel="server" href="server.js">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f8fb;
+      margin: 0;
+      padding: 0;
+    }
+    .main-header {
+      background:rgba(0, 0, 255, 0.799) ;
+      padding: 1rem;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .main-header nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1rem;
+    }
+    .main-header nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .content {
+      padding: 2rem;
+    }
+    .content h1 {
+      margin-bottom: 1rem;
+    }
+    .content input, select {
+      padding: 10px;
+      width: 100%;
+      max-width: 400px;
+      margin-bottom: 1rem;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    .blog-list li {
+      background: white;
+      margin-bottom: 1rem;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+  </style>
 </head>
 <body>
-    <header class="main-header">
-        <div class="logo">SuperCRM</div>
-        <nav>
-          <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="dashboard.html">Dashboard</a></li>
-            <li><a href="customer.html">Customers</a></li>
-            <li><a href="blog.html">Blog</a></li>
-            <li><a href="login.html">Login</a></li>
-            <li><a href="register.html">Register</a></li>
-          </ul>
-        </nav>
-      </header>
-      
+  <header class="main-header">
+    <div class="logo">SuperCRM</div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="customer.html">Customers</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="login.html">Login</a></li>
+        <li><a href="register.html">Register</a></li>
+      </ul>
+    </nav>
+  </header>
 
   <section class="content">
     <h1>Latest Blog Posts</h1>
 
+    <select id="roleSelect">
+      <option value="all">All</option>
+      <option value="admin">Admin</option>
+      <option value="telecaller">Telecaller</option>
+      <option value="user">User</option>
+    </select>
+
     <input type="text" id="searchInput" placeholder="Search blog posts...">
+    
     <ul id="blogList" class="blog-list">
-      <!-- Dynamic blog posts -->
+      <!-- Dynamic blog posts will appear here -->
     </ul>
   </section>
 
   <script>
     const posts = [
-      { title: "5 Tips to Close More Deals", summary: "Learn practical tips to boost your CRM sales strategy." },
-      { title: "How to Manage Customer Calls Effectively", summary: "Techniques to streamline communication with clients." },
-      { title: "Why CRMs Improve Productivity", summary: "Explore how CRMs help reduce manual work and increase focus." },
+      { role: "admin", title: "Admin Insights: Managing CRM Settings", summary: "Deep dive into CRM configuration for admins." },
+      { role: "admin", title: "Data Security Tips", summary: "How admins can secure sensitive CRM data." },
+      
+      { role: "telecaller", title: "How to Manage Customer Calls Effectively", summary: "Techniques to streamline communication with clients." },
+      { role: "telecaller", title: "Telecaller Script Tips", summary: "Learn to engage customers more efficiently." },
+      
+      { role: "user", title: "Why CRMs Improve Productivity", summary: "Explore how CRMs help reduce manual work and increase focus." },
+      { role: "user", title: "5 Tips to Close More Deals", summary: "Learn practical tips to boost your CRM sales strategy." },
     ];
 
     const blogList = document.getElementById("blogList");
     const searchInput = document.getElementById("searchInput");
+    const roleSelect = document.getElementById("roleSelect");
 
-    const renderPosts = (query = "") => {
+    function renderPosts(query = "", role = "all") {
       blogList.innerHTML = "";
-      const filtered = posts.filter(p => p.title.toLowerCase().includes(query.toLowerCase()));
-      filtered.forEach(p => {
-        const li = document.createElement("li");
-        li.innerHTML = `<h3>${p.title}</h3><p>${p.summary}</p>`;
-        blogList.appendChild(li);
-      });
-    };
-
-    renderPosts();
+      const filtered = posts.filter(p =>
+        (role === "all" || p.role === role) &&
+        (p.title.toLowerCase().includes(query.toLowerCase()) ||
+         p.summary.toLowerCase().includes(query.toLowerCase()))
+      );
+      if (filtered.length === 0) {
+        blogList.innerHTML = "<li>No posts found for this role.</li>";
+      } else {
+        filtered.forEach(p => {
+          const li = document.createElement("li");
+          li.innerHTML = `<h3>${p.title}</h3><p>${p.summary}</p>`;
+          blogList.appendChild(li);
+        });
+      }
+    }
 
     searchInput.addEventListener("input", () => {
-      renderPosts(searchInput.value);
+      renderPosts(searchInput.value, roleSelect.value);
     });
 
-    document.getElementById("logoutBtn").addEventListener("click", () => {
-      localStorage.clear();
-      window.location.href = "login.html";
+    roleSelect.addEventListener("change", () => {
+      renderPosts(searchInput.value, roleSelect.value);
     });
+
+    renderPosts();
   </script>
 </body>
 </html>
